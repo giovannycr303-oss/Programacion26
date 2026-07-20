@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mesa de Ayuda TI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <span class="icon">⚡</span>
+        <h1>Mesa de Ayuda TI</h1>
+      </div>
+      <p>Gestión centralizada de incidentes y requerimientos de infraestructura.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Panel Izquierdo: Registro -->
+    <section class="card form-card">
+      <h2>Nuevo Incidente</h2>
+      <form id="ticketForm" novalidate>
+        <div class="grid">
+          <label for="requester">
+            Solicitante
+            <input type="text" id="requester" placeholder="Nombre completo" required />
+          </label>
+          
+          <label for="email">
+            Correo corporativo
+            <input type="email" id="email" placeholder="usuario@empresa.com" required />
+          </label>
+          
+          <label for="department">
+            Departamento
+            <select id="department" required>
+              <option value="">Seleccionar área...</option>
+              <option>Soporte TI</option>
+              <option>Recursos Humanos</option>
+              <option>Finanzas</option>
+              <option>Operaciones</option>
+              <option>Ventas</option>
+            </select>
+          </label>
+          
+          <label for="priority">
+            Nivel de Prioridad
+            <select id="priority" required>
+              <option value="">Seleccionar...</option>
+              <option>Alta</option>
+              <option>Media</option>
+              <option>Baja</option>
+            </select>
+          </label>
+          
+          <label for="issueType">
+            Categoría (Hardware, Red, etc.)
+            <input type="text" id="issueType" placeholder="Ej. Directorio Activo, Redes..." required />
+          </label>
+          
+          <label for="status">
+            Estado inicial
+            <select id="status" required>
+              <option value="Pendiente">Pendiente</option>
+              <option value="En proceso">En proceso</option>
+              <option value="Resuelto">Resuelto</option>
+            </select>
+          </label>
+        </div>
+
+        <label for="description" class="full-width">
+          Descripción técnica
+          <textarea id="description" rows="4" placeholder="Detalla la falla o el requerimiento paso a paso..." required></textarea>
+        </label>
+
+        <div class="actions">
+          <button type="submit" class="primary">Crear Ticket</button>
+          <button type="reset" class="secondary">Descartar</button>
+        </div>
+        <p id="formMessage" class="message"></p>
+      </form>
+    </section>
+
+    <!-- Panel Derecho: Dashboard y Tabla -->
+    <section class="card table-card">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Total Casos</span>
+          <strong id="totalTickets">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Pendientes</span>
+          <strong id="pendingCount">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">En Curso</span>
+          <strong id="inProgressCount">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Resueltos</span>
+          <strong id="resolvedCount">0</strong>
+        </div>
+      </div>
+
+      <div class="table-header">
+        <div class="search-box">
+          <input id="search" type="search" placeholder="Buscar ticket (Ej. INC-0001, nombre, categoría)..." />
+        </div>
+        <div class="filters">
+          <select id="filterStatus">
+            <option value="Todos">Todos los estados</option>
+            <option>Pendiente</option>
+            <option>En proceso</option>
+            <option>Resuelto</option>
+            <option>Cancelado</option>
+          </select>
+          <button id="exportCsv" class="secondary">CSV</button>
+          <button id="exportJson" class="secondary">JSON</button>
+          <button id="clearAll" class="danger">Purgar</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha Registro</th>
+              <th>Solicitante</th>
+              <th>Departamento</th>
+              <th>Categoría</th>
+              <th>Prioridad</th>
+              <th>Estado</th>
+              <th>Administración</th>
+            </tr>
+          </thead>
+          <tbody id="ticketTableBody">
+            <!-- Renderizado dinámico -->
+          </tbody>
+        </table>
+      </div>
+      <p id="emptyMessage" class="empty-message">La cola de tickets está vacía.</p>
+    </section>
+  </main>
+
+  <!-- Modal Refinada -->
+  <div id="ticketModal" class="modal-overlay">
+    <div class="modal-container">
+      <button class="modal-close" id="closeModal">&times;</button>
+      <div class="modal-header">
+        <span class="modal-badge" id="modalPriority">ALTA</span>
+        <h3 id="modalTitle">INC-0000</h3>
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta-grid">
+          <div>
+            <small>Solicitante</small>
+            <p id="modalRequester">-</p>
+          </div>
+          <div>
+            <small>Departamento</small>
+            <p id="modalDept">-</p>
+          </div>
+          <div>
+            <small>Correo</small>
+            <p id="modalEmail">-</p>
+          </div>
+          <div>
+            <small>Categoría</small>
+            <p id="modalType">-</p>
+          </div>
+        </div>
+        <div class="modal-description-box">
+          <small>Registro de Actividad</small>
+          <p id="modalDescription">-</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
